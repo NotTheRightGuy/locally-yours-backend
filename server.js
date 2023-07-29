@@ -18,12 +18,14 @@ app.use(bodyParser.json());
 //Importing Routes
 const userRouter = require("./routes/User.js");
 const newsRouter = require("./routes/News.js");
+const categoryRouter = require("./routes/Category.js");
 
 app.use("/users", userRouter);
 app.use("/news", newsRouter);
+app.use("/category", categoryRouter);
 
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.send("Hosted server is running!");
 });
 
 app.listen(PORT, () => {
