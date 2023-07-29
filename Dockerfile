@@ -12,4 +12,4 @@ COPY . .
 
 EXPOSE 8080
 
-CMD [ "npm", "run", "server" ]
+CMD [ "nodemon", "server.js" ]
