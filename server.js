@@ -15,6 +15,11 @@ app.use(
 app.use(logger);
 app.use(bodyParser.json());
 
+//Importing Routes
+const userRouter = require("./routes/User.js");
+
+app.use("/users", userRouter);
+
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });

@@ -1,0 +1,47 @@
+const userRouter = require("express").Router();
+const supabase = require("../supabase.js");
+
+userRouter.get("/", async (req, res) => {
+    const { data, error } = await supabase.from("Users").select();
+    if (error) {
+        console.log(error);
+        return res.status(500).json({ error: error.message });
+    }
+    return res.status(200).json(data);
+});
+
+userRouter.post("/", async (req, res) => {
+    const {
+        email,
+        first_name,
+        last_name,
+        phone,
+        adr_line_1,
+        adr_line_2,
+        pincode,
+        city,
+        state,
+    } = req.body;
+    const { data, error } = await supabase.from("Users").insert([
+        {
+            email,
+            first_name,
+            last_name,
+            phone,
+            adr_line_1,
+            adr_line_2,
+            pincode,
+            city,
+            state,
+        },
+    ]);
+    if (error) {
+        console.log(error);
+        return res.status(500).json({ error: error.message });
+    }
+    return res.status(200).json({
+        message: `User with email ${email} and pincode ${pincode} added successfully!`,
+    });
+});
+
+module.exports = userRouter;
