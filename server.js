@@ -17,8 +17,10 @@ app.use(bodyParser.json());
 
 //Importing Routes
 const userRouter = require("./routes/User.js");
+const newsRouter = require("./routes/News.js");
 
 app.use("/users", userRouter);
+app.use("/news", newsRouter);
 
 app.get("/", (req, res) => {
     res.send("Hello World!");
