@@ -19,10 +19,12 @@ app.use(bodyParser.json());
 const userRouter = require("./routes/User.js");
 const newsRouter = require("./routes/News.js");
 const categoryRouter = require("./routes/Category.js");
+const pincode=require("./routes/Pincode.js")
 
 app.use("/users", userRouter);
 app.use("/news", newsRouter);
 app.use("/category", categoryRouter);
+app.use("/pincode",pincode)
 
 app.get("/", (req, res) => {
     res.send("Hosted server is running!");
