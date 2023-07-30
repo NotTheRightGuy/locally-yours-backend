@@ -1,71 +1,27 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const app = express()
-// const supabase = require("../supabase.js")
+const pincodeRouter = require("express").Router();
+const supabase = require("../supabase");
+const axios = require("axios");
 
-// const {createClient} = require("@supabase/supabase-js")
-// const API="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inphc2JncnVtamdtZnJub3djYWJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODk1OTIzMzEsImV4cCI6MjAwNTE2ODMzMX0.v3aaBVcA4lCBSVRmU-UWH6X6MsNIC-fdVEYCfQh0gDY"
-// const URL="https://zasbgrumjgmfrnowcabo.supabase.co"
-
-// const supabase=createClient(URL,API)
-const jsonParser = bodyParser.json()
-app.use(cors())
-
-// const NewsAPI = require("newsapi");
-// const news = new NewsAPI(process.env.NEWS_API);
-const cityFetch=()=>{
-
-    input={
-        "pincode":"123456"
+pincodeRouter.post("/", async (req, res) => {
+    const { pincode } = req.body;
+    const options = {
+        method: "POST",
+        url: "https://get-details-by-pin-code-india.p.rapidapi.com/detailsbypincode",
+        headers: {
+            "content-type": "application/json",
+            "X-RapidAPI-Key":
+                "0537b8df84msh9ddd242f693c849p19779ajsn2a3dfeb14aba",
+            "X-RapidAPI-Host": "get-details-by-pin-code-india.p.rapidapi.com",
+        },
+        data: { pincode: pincode },
+    };
+    try {
+        const response = await axios.request(options);
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: error.message });
     }
+});
 
-    fetch("https://reqres.in/api/users",{
-        method:"POST",
-        headers:{
-            'Content-Type':"application/json"
-        },
-            body:JSON.stringify(input)
-        })
-        .then(res=>res.json())
-        .then(res=>res["output"])
-    // console.log(res)
-    newsFetch(res)
-}
-
-const newsFetch=(city)=>{
-    input=city
-    fetch("news/endpoint",{
-        method:"POST"   ,
-        headers:{
-            'Content-Type':"application/json"
-        },
-            body:JSON.stringify(input)
-        })
-        .then(res=>res.json())
-        .then(res=>res["output"])
-    console.log(res)
-    newsFetch(res)
-}
-
-// app.post("/api/posting",jsonParser,async (req,res) => {
-//     input={
-//         "name":"morpheus",
-//         "job":"leader"
-//     }
-
-//     fetch("https://reqres.in/api/users",{
-//         method:"POST",
-//         headers:{
-//             'Content-Type':"application/json"
-//         },
-//             body:JSON.stringify(input)
-//         })
-//         .then(res=>res.json())
-//         .then(res=>res["output"])
-//         res.send(res)   
-// })
-//     let output=false;
-
-    // res.json({"output":data})
-// })
+module.exports = pincodeRouter;
